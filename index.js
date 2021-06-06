@@ -21,7 +21,7 @@ db.once("open", function () {
 });
 
 const jsonparser = bodyParser.json();
-const buildPath = path.join(__dirname, "..", "build");
+const buildPath = path.join(__dirname, "./client", "build");
 const uploadPath = path.join(__dirname, ".", "/uploads");
 app.use(express.static(buildPath));
 app.use("/uploads", express.static(uploadPath));

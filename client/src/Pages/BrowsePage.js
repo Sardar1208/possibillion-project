@@ -17,7 +17,7 @@ function BrowsePage() {
   const history = useHistory();
 
   async function getdata(entryNumber) {
-    const res = await fetch("http://localhost:8080/getFileList", {
+    const res = await fetch(process.env.REACT_APP_API_URL +  "/getFileList", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -57,12 +57,12 @@ function BrowsePage() {
           className="card"
           onClick={() => {
             // setVideoSource()
-            openModal(`http://localhost:8080/${file.movie}`);
+            openModal(process.env.REACT_APP_API_URL + `/${file.movie}`);
           }}
         >
           <div className="thumbnail">
             <img
-              src={`http://localhost:8080/${file.thumbnail}`}
+              src={process.env.REACT_APP_API_URL + `/${file.thumbnail}`}
               width="100%"
               height="100%"
               style={{ objectFit: "cover" }}

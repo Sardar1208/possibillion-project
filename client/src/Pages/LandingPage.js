@@ -42,7 +42,7 @@ function LandingPage() {
     const data = new URLSearchParams(formdata);
 
     console.log("data: " ,...data)
-    const res = await fetch("http://localhost:8080/saveFile", {
+    const res = await fetch(process.env.REACT_APP_API_URL + "/saveFile", {
       method: "POST",
       body: formdata,
     });
