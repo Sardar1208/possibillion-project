@@ -114,6 +114,13 @@ function LandingPage() {
       if (result.result == "success") {
         setUploading(false);
         setUploadBtnState("UPLOAD");
+        setThumbnailValidation("");
+        setVideoValidation("");
+      } else if (result.result == "no files") {
+        setUploading(false);
+        setUploadBtnState("UPLOAD");
+        setThumbnailValidation("upload this file");
+        setVideoValidation("upload this file");
       }
       setFormData(new FormData());
     }
@@ -213,7 +220,7 @@ function LandingPage() {
                         className="drop-text"
                       >
                         {uploadedThumbnail
-                          ? uploadedThumbnail.slice(0,25) + "..."
+                          ? uploadedThumbnail.slice(0, 25) + "..."
                           : "Drag 'n' drop some files here, or click to select files"}
                       </span>
                       <img
@@ -248,7 +255,7 @@ function LandingPage() {
                         className="drop-text"
                       >
                         {uploadedVideo
-                          ? uploadedVideo.slice(0,25) + "..."
+                          ? uploadedVideo.slice(0, 25) + "..."
                           : "Drag 'n' drop some files here, or click to select files"}
                       </span>
                       <img

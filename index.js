@@ -10,10 +10,13 @@ const FileList = require("./FileList.js");
 const app = express();
 
 //-------Mongoose----------
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/posibillion", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  process.env.MONGODB_URI || "mongodb://localhost:27017/posibillion",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function () {
@@ -41,8 +44,8 @@ app.use(
 );
 
 app.listen(process.env.PORT || "8080", (err) => {
-  if(err){
-    console.log("error in server")
+  if (err) {
+    console.log("error in server");
   }
   console.log("server started on port 8080");
 });
@@ -74,16 +77,20 @@ app.post(
   async (req, res) => {
     const { title, year, language } = req.body;
     console.log("req body: ", req.body);
-    console.log("req files: ", req.files.file[0]['path']);
-    const entry = new FileList({
-      title: title,
-      year: year,
-      language: language,
-      thumbnail: req.files.thumbnail[0]['path'],
-      movie: req.files.file[0]['path'],
-    });
-    await entry.save();
-    res.json({result: "success"});
+    // console.log("req files: ", req.files.file[0]['path']);
+    if (req.files.thumbnail && req.files.file) {
+      const entry = new FileList({
+        title: title,
+        year: year,
+        language: language,
+        thumbnail: req.files.thumbnail[0]["path"],
+        movie: req.files.file[0]["path"],
+      });
+      await entry.save();
+      res.json({ result: "success" });
+    }else{
+      res.json({result: "no files"});
+    }
   }
 );
 
@@ -91,9 +98,13 @@ app.post("/getFileList", async (req, res) => {
   const filelist = await FileList.find({}).skip(req.body.currentEntry).limit(6);
   console.log("body: ", req.body.currentEntry);
   // console.log("filelist: ", filelist);
-  res.json({result: 'success', list: filelist, loadedEntries: req.body.currentEntry + filelist.length});
+  res.json({
+    result: "success",
+    list: filelist,
+    loadedEntries: req.body.currentEntry + filelist.length,
+  });
 });
 
-if(process.env.NODE_ENV === "production"){
+if (process.env.NODE_ENV === "production") {
   app.use(express.static("client-build"));
 }
