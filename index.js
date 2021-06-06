@@ -10,7 +10,7 @@ const FileList = require("./FileList.js");
 const app = express();
 
 //-------Mongoose----------
-mongoose.connect("mongodb://localhost:27017/posibillion", {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/posibillion", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -40,7 +40,10 @@ app.use(
   })
 );
 
-app.listen("8080", () => {
+app.listen(process.env.PORT || "8080", (err) => {
+  if(err){
+    console.log("error in server")
+  }
   console.log("server started on port 8080");
 });
 
@@ -89,3 +92,7 @@ app.post("/getFileList", async (req, res) => {
   // console.log("filelist: ", filelist);
   res.json({result: 'success', list: filelist, loadedEntries: req.body.currentEntry + filelist.length});
 });
+
+if(process.env.NODE_ENV === "production"){
+  app.use(express.static("client-build"));
+}
