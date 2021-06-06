@@ -14,10 +14,11 @@ function BrowsePage() {
   const [currentEntry, setCurrentEntry] = useState(0);
   const [videoSource, setVideoSource] = useState("");
   const [modalDisplay, setModalDisplay] = useState(false);
+  const [paginationDisplay, setPaginationDisplay] = useState("none");
   const history = useHistory();
 
   async function getdata(entryNumber) {
-    const res = await fetch(process.env.REACT_APP_API_URL +  "/getFileList", {
+    const res = await fetch(process.env.REACT_APP_API_URL + "/getFileList", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -51,38 +52,45 @@ function BrowsePage() {
   }, []);
 
   useEffect(() => {
-    let list = fileList.map((file) => {
-      return (
-        <div
-          className="card"
-          onClick={() => {
-            // setVideoSource()
-            openModal(process.env.REACT_APP_API_URL + `/${file.movie}`);
-          }}
-        >
-          <div className="thumbnail">
-            <img
-              src={process.env.REACT_APP_API_URL + `/${file.thumbnail}`}
-              width="100%"
-              height="100%"
-              style={{ objectFit: "cover" }}
-            />
+    if (fileList.length > 0) {
+      setPaginationDisplay("block");
+      let list = fileList.map((file) => {
+        return (
+          <div
+            className="card"
+            onClick={() => {
+              // setVideoSource()
+              openModal(process.env.REACT_APP_API_URL + `/${file.movie}`);
+            }}
+          >
+            <div className="thumbnail">
+              <img
+                src={process.env.REACT_APP_API_URL + `/${file.thumbnail}`}
+                width="100%"
+                height="100%"
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+            <div className="entry-info">
+              <div className>
+                <h1>{file.title}</h1>
+              </div>
+              <div>
+                <h4>Language: {file.language}</h4>
+              </div>
+              <div className="year">
+                <h4>{file.year}</h4>
+              </div>
+            </div>
           </div>
-          <div className="entry-info">
-            <div className>
-              <h1>{file.title}</h1>
-            </div>
-            <div>
-              <h4>Language: {file.language}</h4>
-            </div>
-            <div className="year">
-              <h4>{file.year}</h4>
-            </div>
-          </div>
-        </div>
-      );
-    });
-    setFinalList(list);
+        );
+      });
+      setFinalList(list);
+    } else {
+      let list = <div className="no-entry">No Entries made yet</div>;
+      setFinalList(list);
+      setPaginationDisplay("none")
+    }
   }, [fileList]);
 
   return (
@@ -93,7 +101,7 @@ function BrowsePage() {
         <div className="experiment"></div>
         <div style={{ width: "50%" }}>
           {currentEntry >= 0 ? (
-            <div className="pagination">
+            <div className="pagination" style={{display: paginationDisplay}}>
               <span
                 onClick={() => {
                   console.log("currentEntry: ", currentEntry);
@@ -115,7 +123,7 @@ function BrowsePage() {
             <div></div>
           )}
           <div className="video-entry">{finalList}</div>
-          <div className="pagination">
+          <div className="pagination" style={{display: paginationDisplay}}>
             <span
               onClick={() => {
                 console.log("currentEntry: ", currentEntry);
@@ -154,13 +162,11 @@ function BrowsePage() {
       </div>
       {modalDisplay ? (
         <div id="myModal" class="modal">
-          <div className="modal-overlay"  onClick={closeModal}>
-
-          </div>
+          <div className="modal-overlay" onClick={closeModal}></div>
           <div class="modal-content">
             {/* <span class="close"  onClick={closeModal}>&times;</span> */}
             <video width="100%" height="100%" controls>
-              <source src={videoSource} type="video/mp4" ></source>
+              <source src={videoSource} type="video/mp4"></source>
             </video>
           </div>
         </div>

@@ -83,6 +83,7 @@ app.post(
       movie: req.files.file[0]['path'],
     });
     await entry.save();
+    res.json({result: "success"});
   }
 );
 

@@ -20,16 +20,16 @@
   font-weight: bold;
   display: flex;
 }
-.back-btn:hover{
-    text-decoration: underline;
-    cursor: pointer;
+.back-btn:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 .back-btn img {
   margin-right: 5px;
   width: 1.3rem;
 }
 .video-info {
-  background-color:white;
+  background-color: white;
   border-radius: 10px;
   margin: 40px;
   /* height: 100%; */
@@ -150,16 +150,20 @@
   align-items: center;
   /* background-color: red; */
 }
-.drop-thumbnail:hover{
-    border-color: black;
-    cursor: pointer;
+.drop-thumbnail:hover {
+  border-color: black;
+  cursor: pointer;
 }
 .drop-thumbnail img {
   width: 20%;
 }
-.drop-img{
-    margin: auto;
+.drop-img {
+  margin: auto;
 }
-.drop-text{
-    color: rgb(121, 114, 114);
+.drop-text {
+  color: rgb(121, 114, 114);
+}
+.error {
+  color: red;
+  margin: 0;
 }
